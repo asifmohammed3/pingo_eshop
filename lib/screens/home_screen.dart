@@ -1,44 +1,34 @@
 import 'package:eshop/providers/product_provider.dart';
+import 'package:eshop/services/remote_config_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets/product_card.dart';
 import '../utils/constants.dart';
 
-class HomeScreen extends StatefulWidget {
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  bool _isFirstLoad = true;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_isFirstLoad) {
-      Provider.of<ProductProvider>(context, listen: false)
-          .fetchProducts(isInitialLoad: true);
-      _isFirstLoad = false;
-    }
-  }
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProductProvider>(
-      builder: (context, productProvider, child) {
+    Provider.of<ProductProvider>(context, listen: false)
+        .fetchProducts(isInitialLoad: true);
+    Provider.of<RemoteConfigProvider>(context, listen: false).fetchConfig();
+
+    return Consumer2<ProductProvider, RemoteConfigProvider>(
+      builder: (context, productProvider, remConfigProvider, child) {
         return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
             actions: [
               IconButton(
-                icon: Icon(Icons.logout),
+                icon: const Icon(Icons.logout),
                 color: lightColor,
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, '/signin');
                 },
               ),
             ],
-            title: Text(
+            title: const Text(
               '  e-Shop',
               style: TextStyle(
                 fontFamily: fontPoppins,
@@ -49,16 +39,14 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Theme.of(context).primaryColor,
           ),
           body: productProvider.isLoading && productProvider.products.isEmpty
-              ? Center(child: CircularProgressIndicator())
+              ? const Center(child: CircularProgressIndicator())
               : productProvider.products.isEmpty
-                  ? Center(child: Text('No products found'))
+                  ? const Center(child: Text('No products found'))
                   : NotificationListener<ScrollNotification>(
                       onNotification: (ScrollNotification scrollInfo) {
                         if (!productProvider.isLoading &&
                             scrollInfo.metrics.pixels ==
                                 scrollInfo.metrics.maxScrollExtent) {
-                          print(
-                              'End of list reached, loading more products...');
                           productProvider.loadMoreProducts();
                           return true;
                         }
@@ -79,10 +67,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               (productProvider.isLoading ? 1 : 0),
                           itemBuilder: (context, index) {
                             if (index == productProvider.products.length) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(
+                                  child: CircularProgressIndicator());
                             }
                             final product = productProvider.products[index];
-                            return ProductCard(products: product);
+                            return ProductCard(
+                              products: product,
+                              isDiscounted: remConfigProvider.isDiscounted,
+                            );
                           },
                         ),
                       ),

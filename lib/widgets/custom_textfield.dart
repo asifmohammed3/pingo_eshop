@@ -7,7 +7,8 @@ class CustomTextField extends StatelessWidget {
   final bool obscureText;
   final String? Function(String?)? validator;
 
-  CustomTextField({
+  const CustomTextField({
+    super.key,
     required this.hintText,
     required this.controller,
     this.obscureText = false,
@@ -28,13 +29,13 @@ class CustomTextField extends StatelessWidget {
           errorMaxLines: 2,
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide(color: Colors.red),
+            borderSide: const BorderSide(color: Colors.red),
           ),
           filled: true,
           fillColor: lightColor,
           hintText: hintText,
           contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide.none,

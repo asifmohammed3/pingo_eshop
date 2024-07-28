@@ -1,4 +1,4 @@
-import 'package:eshop/services.dart/auth_service.dart';
+import 'package:eshop/services/auth_service.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:eshop/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +8,8 @@ class LoginScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +78,6 @@ class LoginScreen extends StatelessWidget {
                           ? const CircularProgressIndicator(
                               valueColor:
                                   AlwaysStoppedAnimation<Color>(Colors.white),
-                                  
                             )
                           : const Text(
                               'Login',

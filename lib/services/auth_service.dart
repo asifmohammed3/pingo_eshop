@@ -29,7 +29,7 @@ class AuthService with ChangeNotifier {
 
       final credential = await _firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password)
-          .timeout(Duration(seconds: 10));
+          .timeout(const Duration(seconds: 10));
       _setLoading(false);
       Fluttertoast.showToast(msg: 'Login Successful');
       if (credential.user != null) {

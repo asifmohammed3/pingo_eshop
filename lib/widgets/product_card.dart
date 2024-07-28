@@ -1,16 +1,20 @@
 import 'package:eshop/utils/constants.dart';
 import 'package:flutter/material.dart';
-import '../models/product.dart';
+import 'package:eshop/models/product.dart';
 
 class ProductCard extends StatelessWidget {
   final Products products;
+  final bool isDiscounted;
 
-  ProductCard({required this.products});
+  const ProductCard({
+    super.key,
+    required this.products,
+    required this.isDiscounted,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 50,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
@@ -19,13 +23,10 @@ class ProductCard extends StatelessWidget {
             color: Colors.grey[300]!,
             blurRadius: 5,
             spreadRadius: 1,
-            offset: Offset(2, 4),
+            offset: const Offset(2, 4),
           ),
         ],
       ),
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.circular(15),
-      // ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -46,17 +47,17 @@ class ProductCard extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               products.title!,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(
               products.description!,
               softWrap: true,
@@ -67,43 +68,62 @@ class ProductCard extends StatelessWidget {
                 color: Colors.grey[600],
               ),
             ),
-            SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Expanded(
-                  child: Text(
-                    "\$${products.price!.toInt().toString()}",
-                    style: TextStyle(
-                      fontSize: 14,
-                      decoration: TextDecoration.lineThrough,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    "\$${products.priceAfterDiscount!.toInt().toString()}",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    "${products.discountPercentage.toString()}% off",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.green,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            const SizedBox(height: 5),
+            isDiscounted ? showDiscountPrice() : showOriginalPrice(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget showOriginalPrice() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "\$${products.price!.toInt().toString()}",
+          style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic),
+        ),
+      ],
+    );
+  }
+
+  Widget showDiscountPrice() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Expanded(
+          child: Text(
+            "\$${products.price!.toStringAsFixed(1)}",
+            style: TextStyle(
+              fontSize: 14,
+              decoration: TextDecoration.lineThrough,
+              color: Colors.grey[600],
+            ),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            "\$${products.priceAfterDiscount!.toStringAsFixed(1)}",
+            style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w900,
+                fontStyle: FontStyle.italic),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            "${products.discountPercentage.toString()}% off",
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.green,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

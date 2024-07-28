@@ -1,9 +1,10 @@
 import 'package:eshop/firebase_options.dart';
 import 'package:eshop/providers/product_provider.dart';
-import 'package:eshop/screens/login_screen.dart';
 import 'package:eshop/screens/home_screen.dart';
+import 'package:eshop/screens/login_screen.dart';
 import 'package:eshop/screens/register_screen.dart';
-import 'package:eshop/services.dart/auth_service.dart';
+import 'package:eshop/services/auth_service.dart';
+import 'package:eshop/services/remote_config_service.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +35,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProvider(create: (_) => RemoteConfigProvider()),
       ],
-
       child: MaterialApp(
         title: 'e-Shop',
         theme: ThemeData(
@@ -61,13 +62,13 @@ class MyApp extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: primaryColor,
               foregroundColor: Colors.white,
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                 fontFamily: fontPoppins,
                 fontWeight: fontWeightMedium,
               ),
             ),
           ),
-          inputDecorationTheme: InputDecorationTheme(
+          inputDecorationTheme: const InputDecorationTheme(
             border: OutlineInputBorder(),
           ),
         ),
@@ -76,7 +77,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => LoginScreen(),
           '/signup': (context) => RegisterScreen(),
           '/signin': (context) => LoginScreen(),
-          '/home': (context) => HomeScreen(),
+          '/home': (context) => const HomeScreen(),
         },
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:eshop/services.dart/product_service.dart';
+import 'package:eshop/services/product_service.dart';
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 
@@ -24,7 +24,6 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      print('Fetching products: skip=$_skip, limit=$_limit');
       final product =
           await _productService.fetchProducts(skip: _skip, limit: _limit);
       if (isInitialLoad) {
@@ -33,7 +32,6 @@ class ProductProvider with ChangeNotifier {
         _products.addAll(product.products!);
       }
       _skip += _limit;
-      print('Fetched ${product.products!.length} products');
     } catch (e) {
       print(e);
     } finally {

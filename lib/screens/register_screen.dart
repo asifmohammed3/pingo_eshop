@@ -1,4 +1,4 @@
-import 'package:eshop/services.dart/auth_service.dart';
+import 'package:eshop/services/auth_service.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:eshop/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
